@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malaysia Viral News — AutoMalaysia</title>
+<meta name="description" content="Automated Malaysia news aggregator that turns trending stories into short-form vertical videos.">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, system-ui, 'Segoe UI', sans-serif;
+    margin: 0;
+    background: #0a0a0f;
+    color: #f4f4f8;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 60px 24px; }
+  header { text-align: center; margin-bottom: 48px; }
+  .badge {
+    display: inline-block;
+    background: #ff3355;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 44px;
+    margin: 0 0 12px;
+    background: linear-gradient(135deg, #ff3355 0%, #ffd84d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .tagline { color: #9a9aa8; font-size: 18px; margin: 0; }
+  section { margin: 40px 0; }
+  h2 {
+    font-size: 22px;
+    color: #ffd84d;
+    border-bottom: 1px solid #1f1f29;
+    padding-bottom: 8px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .card {
+    background: #15151c;
+    border: 1px solid #1f1f29;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card h3 { margin: 0 0 8px; color: #f4f4f8; font-size: 16px; }
+  .card p { margin: 0; color: #9a9aa8; font-size: 14px; }
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid #1f1f29;
+    text-align: center;
+    color: #9a9aa8;
+    font-size: 14px;
+  }
+  footer a {
+    color: #ff3355;
+    text-decoration: none;
+    margin: 0 12px;
+  }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <span class="badge">Malaysia · Automated</span>
+    <h1>Malaysia Viral News</h1>
+    <p class="tagline">Berita viral Malaysia dalam format video pendek — automated daily.</p>
+  </header>
+
+  <section>
+    <h2>What it does</h2>
+    <p>Malaysia Viral News (AutoMalaysia) is an automated content pipeline that
+    monitors Malaysian news outlets and trending social media every day, rewrites
+    each story in a punchy short-form style, generates a vertical video with
+    voiceover, and publishes the result to the operator's own social media channels.</p>
+  </section>
+
+  <section>
+    <h2>How it works</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>1. Scrape</h3>
+        <p>RSS feeds from Berita Harian, Astro Awani, BBC, FMT, Reddit r/malaysia, and Google Trends MY.</p>
+      </div>
+      <div class="card">
+        <h3>2. Rewrite</h3>
+        <p>An AI rewriter turns each long article into a 15-second voice script and a punchy headline.</p>
+      </div>
+      <div class="card">
+        <h3>3. Generate</h3>
+        <p>FFmpeg builds a 1080×1920 vertical video with TTS voiceover, captions, and background music.</p>
+      </div>
+      <div class="card">
+        <h3>4. Publish</h3>
+        <p>Each video is uploaded automatically to the operator's TikTok inbox and posted to X.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Sources & attribution</h2>
+    <p>All source articles and posts remain the property of their original publishers.
+    AutoMalaysia operates as a personal news aggregator under fair-use principles, and
+    will remove any specific piece of content on request from a rights holder.</p>
+  </section>
+
+  <footer>
+    <p>
+      <a href="terms.html">Terms of Service</a> ·
+      <a href="privacy.html">Privacy Policy</a>
+    </p>
+    <p>© 2026 Malaysia Viral News · AutoMalaysia</p>
+  </footer>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>TikTok OAuth Callback — Malaysia Viral News</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #0b0b0f;
+    --panel: #14141b;
+    --border: #26262f;
+    --text: #f5f5f7;
+    --muted: #9a9aa3;
+    --accent: #ff3b3b;
+    --good: #34d399;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 Oxygen, Ubuntu, sans-serif;
+    min-height: 100vh;
+  }
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 24px;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+  h1 .brand {
+    background: linear-gradient(135deg, #ff3b3b 0%, #ff8c42 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  p.lead {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0 0 32px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 16px;
+  }
+  .label {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .code-box {
+    background: #0a0a0f;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px;
+    word-break: break-all;
+    color: var(--text);
+    user-select: all;
+    cursor: text;
+  }
+  .copy-btn {
+    margin-top: 14px;
+    width: 100%;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .copy-btn:hover { background: #e02828; }
+  .copy-btn.done { background: var(--good); }
+  .ok {
+    color: var(--good);
+    font-weight: 600;
+  }
+  .err {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .steps {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    padding-left: 18px;
+    margin: 0;
+  }
+  .steps li { margin-bottom: 6px; }
+  .steps code {
+    background: #0a0a0f;
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--text);
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1><span class="brand">Malaysia Viral News</span> — TikTok OAuth</h1>
+    <p class="lead">
+      You authorised the app. Copy the code below, then paste it into the
+      terminal where <code style="background:#14141b;padding:2px 6px;border-radius:4px">scripts/tiktok_oauth.py</code> is waiting.
+    </p>
+
+    <div class="card">
+      <div class="label" id="label">Authorisation code</div>
+      <div class="code-box" id="code">…reading from URL…</div>
+      <button class="copy-btn" id="btn" onclick="copyCode()">Copy code</button>
+    </div>
+
+    <div class="card">
+      <div class="label">Next steps</div>
+      <ol class="steps">
+        <li>Click <strong>Copy code</strong> above.</li>
+        <li>Switch to your terminal window.</li>
+        <li>Paste the code at the <code>Paste code here:</code> prompt and press Enter.</li>
+        <li>The script exchanges it for an access token and saves it to <code>.env</code> automatically.</li>
+        <li>You can close this tab.</li>
+      </ol>
+    </div>
+  </div>
+
+<script>
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var code   = params.get("code");
+    var error  = params.get("error") || params.get("error_description");
+    var box    = document.getElementById("code");
+    var btn    = document.getElementById("btn");
+    var label  = document.getElementById("label");
+
+    if (error) {
+      label.innerHTML = '<span class="err">Authorisation failed</span>';
+      box.textContent = error;
+      btn.style.display = "none";
+      return;
+    }
+    if (!code) {
+      label.innerHTML = '<span class="err">No code in URL</span>';
+      box.textContent = "Did you reach this page from TikTok's authorise screen?";
+      btn.style.display = "none";
+      return;
+    }
+
+    box.textContent = code;
+
+    window.copyCode = function () {
+      navigator.clipboard.writeText(code).then(function () {
+        btn.textContent = "Copied — paste it in your terminal";
+        btn.classList.add("done");
+        setTimeout(function () {
+          btn.textContent = "Copy code";
+          btn.classList.remove("done");
+        }, 3000);
+      }).catch(function () {
+        btn.textContent = "Press Ctrl+C after selecting the code above";
+      });
+    };
+  })();
+</script>
+</body>
+</html>

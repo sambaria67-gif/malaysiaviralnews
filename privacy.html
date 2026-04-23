@@ -6,75 +6,122 @@
 <title>Privacy Policy — Malaysia Viral News</title>
 <style>
   body { font-family: -apple-system, system-ui, sans-serif; max-width: 760px;
-         margin: 40px auto; padding: 0 20px; line-height: 1.6; color: #222; }
+         margin: 40px auto; padding: 0 20px; line-height: 1.65; color: #222; }
   h1 { border-bottom: 2px solid #ff3355; padding-bottom: 8px; }
-  h2 { margin-top: 32px; color: #444; }
+  h2 { margin-top: 32px; color: #222; font-size: 1.25em; }
+  h3 { margin-top: 20px; color: #444; font-size: 1.05em; }
   a { color: #ff3355; }
   .meta { color: #888; font-size: 0.9em; }
+  code { background: #f5f5f5; padding: 2px 6px; border-radius: 4px; font-size: 0.92em; }
+  ul li { margin: 6px 0; }
 </style>
 </head>
 <body>
 
 <h1>Privacy Policy</h1>
-<p class="meta">Malaysia Viral News — Last updated: 2026-04-11</p>
+<p class="meta">Malaysia Viral News — Last updated: 2026-04-23</p>
 
 <h2>1. Introduction</h2>
-<p>Malaysia Viral News ("the Service") is an automated content aggregator operated
-for personal, non-commercial use. This Privacy Policy explains what data the Service
-processes and how it is handled.</p>
+<p>Malaysia Viral News ("we", "us", "the Service") is a news and viral content
+aggregation platform operated from Malaysia. We publish short-form video
+summaries of publicly reported news to our own TikTok, Facebook, Threads, and
+web channels, and we allow authorised operators (currently only the platform
+owner) to connect their TikTok account to the Service for the purpose of
+publishing those videos on their behalf. This Privacy Policy explains what
+information we process, why we process it, and how it is protected.</p>
 
-<h2>2. Information We Do NOT Collect</h2>
-<p>The Service does not have user accounts, login forms, comment sections, or any
-mechanism by which visitors can submit personal information. Specifically, we do
-not collect:</p>
+<h2>2. What Information We Collect</h2>
+
+<h3>2.1 Information from TikTok</h3>
+<p>When an operator connects a TikTok account to the Service through TikTok's
+OAuth consent screen, TikTok shares the following with us, with the operator's
+explicit approval:</p>
 <ul>
-  <li>Names, email addresses, phone numbers, or postal addresses</li>
-  <li>Payment information</li>
-  <li>Login credentials</li>
-  <li>Direct messages or private content</li>
+  <li><strong>Basic account information</strong> (via the <code>user.info.basic</code>
+      scope) — TikTok Open ID, display name, and avatar URL. Used only to show
+      the operator which account is currently connected.</li>
+  <li><strong>Video upload capability</strong> (via <code>video.upload</code>) — used to
+      upload video files the operator has generated through the Service to the
+      operator's own TikTok drafts.</li>
+  <li><strong>Video publish capability</strong> (via <code>video.publish</code>) — used to
+      post those videos directly to the operator's TikTok profile when the
+      operator triggers a publish action.</li>
+  <li><strong>OAuth access and refresh tokens</strong> — short-lived tokens issued by
+      TikTok so the Service can call the TikTok Content Posting API on the
+      operator's behalf without storing the operator's TikTok password. We never
+      see or store the operator's TikTok password.</li>
 </ul>
+<p>We do <strong>not</strong> request or access TikTok direct messages, follower lists,
+comments, analytics, or the private video libraries of any other TikTok user.</p>
 
-<h2>3. Information Processed Automatically</h2>
-<p>When social media platforms (TikTok, X, YouTube, Facebook, Instagram) deliver
-the Service's published content to viewers, those platforms may collect standard
-analytics such as view counts and engagement metrics. This data is governed by the
-respective platform's own privacy policy, not this one.</p>
+<h3>2.2 Information from Website Visitors</h3>
+<p>The public website (malaysiaviralnews) collects standard server logs
+(timestamp, IP address, user-agent) as part of hosting. We do not use tracking
+cookies, fingerprinting, or cross-site identifiers. If Google AdSense or
+affiliate widgets are embedded on article pages, those third-party scripts may
+set their own cookies governed by their respective privacy policies.</p>
 
-<h2>4. Source Content</h2>
-<p>The Service ingests publicly available news articles and social media posts.
-No private or password-protected content is accessed. Source authors and outlets
-are credited or linked where appropriate.</p>
-
-<h2>5. Third-Party Services</h2>
-<p>The Service uses the following third-party APIs to publish generated videos:</p>
+<h2>3. How We Use Information</h2>
 <ul>
-  <li><strong>TikTok Content Posting API</strong> — to upload video drafts to the
-      operator's own TikTok account</li>
-  <li><strong>X (Twitter) API</strong> — to publish posts to the operator's own
-      X account</li>
+  <li>To authenticate the operator's TikTok account and keep the session alive.</li>
+  <li>To upload and publish videos the operator has explicitly generated via
+      the Service.</li>
+  <li>To display the operator's connected account name inside the Service's
+      admin view.</li>
+  <li>To refresh OAuth tokens automatically so the operator does not have to
+      re-authorise every day.</li>
 </ul>
-<p>These services receive only the operator's own access tokens and the video files
-being published. No third-party user data is sent.</p>
+<p>We do <strong>not</strong> sell, rent, or share TikTok-derived data with any third
+party. We do not use TikTok data to train machine-learning models. We do not
+combine TikTok data with data from other services.</p>
 
-<h2>6. Cookies and Tracking</h2>
-<p>The Service does not set cookies, use tracking pixels, or run analytics scripts
-on its public pages.</p>
+<h2>4. How We Store and Protect Information</h2>
+<p>OAuth access tokens and refresh tokens are stored locally in a
+<code>.env</code> file on the operator's server, outside of any public directory
+and outside of version control (the <code>.env</code> file is explicitly listed in
+<code>.gitignore</code>). The server is only reachable by the operator. Tokens are
+transmitted only over HTTPS to TikTok's official endpoints
+(<code>open.tiktokapis.com</code>).</p>
 
-<h2>7. Data Retention</h2>
-<p>Generated videos and metadata are stored locally on the operator's own machine
-and are not shared with any third party except the publishing APIs listed above.</p>
+<h2>5. Data Retention</h2>
+<p>OAuth tokens remain valid until the operator revokes them or until TikTok
+invalidates them. When the operator disconnects their TikTok account (see
+Section 7), the corresponding tokens are deleted from our <code>.env</code> file
+within the same session. We retain no TikTok-derived data after disconnection.</p>
+
+<h2>6. Sharing with Third Parties</h2>
+<p>We do not share TikTok data with third parties. Media files the operator
+chooses to upload are transmitted only to TikTok. The Service does not route
+TikTok data through any analytics, advertising, or marketing vendor.</p>
+
+<h2>7. Your Rights — Revoking Access</h2>
+<p>The operator may revoke the Service's access to their TikTok account at any
+time using either of the following methods:</p>
+<ul>
+  <li><strong>Via TikTok:</strong> open the TikTok app → <em>Profile → Menu →
+      Settings and privacy → Security &amp; permissions → Manage app permissions</em>
+      and remove "Malaysia Viral News." TikTok will invalidate the associated
+      tokens immediately.</li>
+  <li><strong>Via this Service:</strong> delete the
+      <code>TIKTOK_ACCESS_TOKEN</code> and <code>TIKTOK_REFRESH_TOKEN</code> entries
+      from the <code>.env</code> file and restart the Service. The Service will
+      stop calling TikTok on the operator's behalf on the next cycle.</li>
+</ul>
+<p>The operator may also request complete deletion of all Service-side TikTok
+data by emailing the address below; we will confirm deletion within 7 days.</p>
 
 <h2>8. Children's Privacy</h2>
-<p>The Service is not directed at children under 13 and does not knowingly process
-data from them.</p>
+<p>The Service is not directed to children under 13 and does not knowingly
+collect information from them.</p>
 
 <h2>9. Changes to This Policy</h2>
-<p>This Privacy Policy may be updated from time to time. The "Last updated" date
-above will reflect the most recent revision.</p>
+<p>We may update this Privacy Policy from time to time. The "Last updated" date
+at the top reflects the most recent revision. Material changes will be
+announced on the Service's home page.</p>
 
 <h2>10. Contact</h2>
-<p>For questions about this Privacy Policy, contact the operator through the social
-media channels operated under the Malaysia Viral News brand.</p>
+<p>Questions or data-deletion requests:
+<a href="mailto:privacy@malaysiaviralnews.com">privacy@malaysiaviralnews.com</a></p>
 
 </body>
 </html>

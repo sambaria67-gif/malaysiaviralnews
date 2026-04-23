@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artikel — Malaysia Viral News</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bricolage+Grotesque:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+    --bg: #0a0a0f;
+    --surface: #15151c;
+    --surface2: #1f1f29;
+    --surface3: #2a2a38;
+    --border: #2a2a38;
+    --text: #f4f4f8;
+    --text2: #9a9aa8;
+    --text3: #5a5a70;
+    --accent: #ff3355;
+    --accent2: #ff5577;
+    --gold: #ffd84d;
+    --purple: #6c5cff;
+    --success: #22d884;
+    --radius: 14px;
+    --radius-sm: 8px;
+    --display: 'Bricolage Grotesque','Inter',system-ui,sans-serif;
+    --body: 'Inter',system-ui,sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--bg); color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+}
+a { text-decoration:none; color:inherit; }
+img { display:block; }
+
+/* ── Header ── */
+.header {
+    background:rgba(18,18,26,0.85);
+    border-bottom:1px solid var(--border);
+    position:sticky; top:0; z-index:100;
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+}
+.header-inner {
+    max-width:1280px; margin:0 auto; padding:0 20px;
+    display:flex; align-items:center; justify-content:space-between;
+    height:64px; gap:24px;
+}
+.logo { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+.logo-icon { height:42px; width:auto; }
+.logo-text { font-size:17px; font-weight:800; letter-spacing:-0.3px; }
+.logo-text span { color:var(--accent); }
+.nav {
+    display:flex; gap:0;
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+}
+.nav::-webkit-scrollbar { display:none; }
+.nav-item {
+    padding:20px 15px; font-size:11.5px; font-weight:700;
+    color:var(--text2); letter-spacing:0.8px;
+    text-transform:uppercase; white-space:nowrap;
+    border-bottom:2px solid transparent;
+    transition:all 0.2s;
+}
+.nav-item:hover { color:var(--text); }
+.nav-item.active { color:var(--accent); border-bottom-color:var(--accent); }
+
+/* ── Ticker ── */
+.ticker {
+    display:flex; align-items:center;
+    background:linear-gradient(90deg, var(--accent), var(--accent2));
+    overflow:hidden; height:40px;
+}
+.ticker-label {
+    background:#8b0020; padding:0 18px;
+    font-size:11px; font-weight:900; color:#fff;
+    height:100%; display:flex; align-items:center;
+    white-space:nowrap; letter-spacing:1.2px;
+}
+.ticker-track { flex:1; overflow:hidden; position:relative; }
+.ticker-content {
+    display:flex; gap:0;
+    animation:scroll 50s linear infinite;
+    white-space:nowrap; padding-left:100%;
+}
+.ticker-item { font-size:13px; font-weight:500; color:#fff; padding:0 10px; }
+.ticker-sep { color:rgba(255,255,255,0.4); padding:0 4px; }
+@keyframes scroll { 0%{transform:translateX(0);} 100%{transform:translateX(-50%);} }
+
+/* ── Badge ── */
+.badge {
+    display:inline-block; padding:5px 11px; border-radius:4px;
+    font-size:10px; font-weight:800; color:#fff;
+    letter-spacing:0.9px; text-transform:uppercase;
+}
+
+/* ── Section head ── */
+.section-head {
+    max-width:1280px; margin:32px auto 16px; padding:0 20px;
+}
+.section-head h2 {
+    font-family:var(--display);
+    font-size:24px; font-weight:800; letter-spacing:-0.4px;
+    padding-bottom:10px;
+    border-bottom:3px solid var(--accent);
+    display:inline-block;
+}
+
+/* ── Featured ── */
+.featured { max-width:1280px; margin:28px auto; padding:0 20px; }
+.featured-card {
+    display:block; position:relative;
+    border-radius:var(--radius); overflow:hidden;
+    height:520px; box-shadow:0 20px 60px rgba(0,0,0,0.4);
+}
+.featured-img { width:100%; height:100%; object-fit:cover; }
+.featured-grad {
+    position:absolute; inset:0;
+    background:linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 35%, transparent 75%);
+}
+.featured-text { position:absolute; bottom:0; left:0; right:0; padding:40px; }
+.featured-text h1 {
+    font-family:var(--display);
+    font-size:42px; font-weight:900; line-height:1.1;
+    margin-top:14px; letter-spacing:-1px;
+    text-shadow:0 2px 12px rgba(0,0,0,0.6);
+    max-width:820px;
+}
+.featured-sub { color:#d0d0e0; margin-top:14px; font-size:16px; max-width:680px; line-height:1.5; }
+.featured-text .meta { color:var(--text2); margin-top:10px; font-size:13px; }
+
+/* ── News grid ── */
+.grid {
+    max-width:1280px; margin:0 auto 60px; padding:0 20px;
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(310px, 1fr));
+    gap:22px;
+}
+.card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); overflow:hidden;
+    transition:transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+.card:hover {
+    transform:translateY(-5px); border-color:var(--accent);
+    box-shadow:0 12px 30px rgba(196,30,58,0.15);
+}
+.card-thumb {
+    position:relative; height:200px; overflow:hidden;
+    background:var(--surface2);
+}
+.card-thumb img {
+    width:100%; height:100%; object-fit:cover;
+    transition:transform 0.4s;
+}
+.card:hover .card-thumb img { transform:scale(1.08); }
+.card-thumb .badge { position:absolute; top:14px; left:14px; }
+.card-info { padding:18px 20px; }
+.card-info h3 {
+    font-size:16px; font-weight:700; line-height:1.4;
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+.card-info .meta {
+    display:block; font-size:12px; color:var(--text2); margin-top:12px;
+}
+
+/* ── Videos hero ── */
+.videos-hero {
+    max-width:1280px; margin:28px auto 20px; padding:0 20px;
+}
+.videos-hero-inner {
+    background:linear-gradient(135deg, #1a0020 0%, #0a0010 100%);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:50px 40px;
+    text-align:center;
+}
+.videos-hero h1 {
+    font-size:48px; font-weight:900; letter-spacing:-1px;
+    background:linear-gradient(135deg, #fff 0%, #ccc 100%);
+    -webkit-background-clip:text; background-clip:text;
+    color:transparent;
+}
+.videos-hero h1 span {
+    background:linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip:text; background-clip:text;
+    color:transparent;
+}
+.videos-hero p {
+    color:var(--text2); font-size:15px; margin-top:10px;
+    max-width:520px; margin-left:auto; margin-right:auto;
+}
+
+/* ── Video grid (9:16 cards) ── */
+.video-grid {
+    max-width:1280px; margin:0 auto 60px; padding:0 20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(250px, 1fr));
+    gap:22px;
+}
+.video-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); overflow:hidden;
+    transition:transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+.video-card:hover {
+    transform:translateY(-6px); border-color:var(--accent);
+    box-shadow:0 16px 40px rgba(196,30,58,0.25);
+}
+.video-thumb {
+    position:relative; width:100%;
+    aspect-ratio:9/16; overflow:hidden;
+    background:#000;
+}
+.video-thumb video {
+    width:100%; height:100%; object-fit:cover;
+}
+.video-thumb .badge {
+    position:absolute; top:14px; left:14px; z-index:2;
+}
+.video-score {
+    position:absolute; top:14px; right:14px;
+    background:rgba(0,0,0,0.75); color:#fff;
+    padding:5px 11px; border-radius:20px;
+    font-size:11px; font-weight:700;
+    backdrop-filter:blur(8px);
+}
+.video-play-icon {
+    position:absolute; top:50%; left:50%;
+    transform:translate(-50%, -50%);
+    width:56px; height:56px;
+    background:rgba(196,30,58,0.92);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:20px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.4);
+    transition:transform 0.2s;
+    pointer-events:none;
+}
+.video-card:hover .video-play-icon { transform:translate(-50%, -50%) scale(1.1); }
+.video-info { padding:16px 18px; }
+.video-info h3 {
+    font-size:15px; font-weight:700; line-height:1.4;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+.video-caption {
+    color:var(--text2); font-size:12.5px; margin-top:8px;
+    line-height:1.5;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+.video-meta {
+    display:flex; gap:6px; margin-top:12px;
+    font-size:11.5px; color:var(--text3);
+}
+
+/* ── Article detail ── */
+.detail { max-width:800px; margin:0 auto; padding:28px 20px 60px; }
+.back {
+    display:inline-block; font-size:13px; font-weight:600;
+    color:var(--accent); margin-bottom:24px; transition:opacity 0.2s;
+}
+.back:hover { opacity:0.7; }
+.detail-head { margin-bottom:26px; }
+.detail-head h1 {
+    font-family:var(--display);
+    font-size:40px; font-weight:900; line-height:1.15;
+    margin-top:14px; letter-spacing:-0.8px;
+}
+.detail-sub {
+    font-size:19px; color:#b8b8cc; margin-top:14px;
+    line-height:1.5; font-weight:500;
+}
+.detail-meta {
+    display:flex; gap:10px; color:var(--text2);
+    font-size:13px; margin-top:14px;
+}
+.detail-hero {
+    width:100%; height:440px;
+    background-size:cover; background-position:center;
+    border-radius:var(--radius); margin-bottom:32px;
+}
+.detail-body { font-size:17px; line-height:1.9; color:#cccce0; }
+.detail-body p { margin-bottom:22px; }
+.detail-body p:first-child::first-letter {
+    float:left; font-size:58px; line-height:50px;
+    padding-right:10px; padding-top:6px;
+    font-weight:900; color:var(--accent);
+}
+
+/* ── Video detail ── */
+.video-detail { max-width:900px; margin:0 auto; padding:28px 20px 40px; }
+.video-detail-head { margin-bottom:22px; }
+.video-detail-head h1 {
+    font-family:var(--display);
+    font-size:34px; font-weight:900; line-height:1.2;
+    margin-top:12px; letter-spacing:-0.6px;
+}
+.video-player-wrap {
+    background:#000; border-radius:var(--radius); overflow:hidden;
+    max-height:85vh;
+    display:flex; justify-content:center;
+    margin-bottom:28px;
+}
+.video-player-wrap video {
+    max-width:100%; max-height:85vh;
+    width:auto; height:auto;
+}
+.video-body { font-size:16px; line-height:1.8; color:#cccce0; max-width:760px; }
+.video-lead {
+    font-size:18px; color:#dcdcf0; font-weight:500;
+    padding:18px 22px; background:var(--surface2);
+    border-left:4px solid var(--accent);
+    border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    margin-bottom:22px;
+}
+.video-body p { margin-bottom:18px; }
+
+/* ── Related ── */
+.related { max-width:1280px; margin:0 auto 60px; padding:0 20px; }
+.related h2 {
+    font-size:22px; font-weight:800; margin-bottom:20px;
+    padding-bottom:12px; border-bottom:3px solid var(--accent);
+    display:inline-block;
+}
+.related-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));
+    gap:16px;
+}
+.related-grid.video-related {
+    grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
+}
+.related-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden;
+    transition:transform 0.2s, border-color 0.2s;
+}
+.related-card:hover { transform:translateY(-3px); border-color:var(--accent); }
+.related-thumb {
+    height:120px; background-size:cover; background-position:center;
+    position:relative; padding:10px;
+}
+.related-thumb .badge { font-size:9px; padding:3px 8px; }
+.video-rel-card .video-thumb { aspect-ratio:9/16; height:auto; }
+.related-card h4 {
+    font-size:13px; font-weight:600; line-height:1.4;
+    padding:10px 12px 4px;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+.related-card .meta {
+    display:block; font-size:11px; color:var(--text2);
+    padding:0 12px 12px;
+}
+
+/* ── Empty state ── */
+.empty-state { text-align:center; padding:100px 20px; }
+.empty-state h2 { font-size:26px; margin-bottom:12px; font-weight:800; }
+.empty-state p { color:var(--text2); font-size:15px; }
+.empty-state code {
+    background:var(--surface2); padding:5px 12px; border-radius:6px;
+    font-size:14px; color:var(--accent);
+}
+.btn {
+    display:inline-block; padding:12px 28px;
+    background:var(--accent); color:#fff;
+    border-radius:8px; font-weight:600; font-size:14px;
+    margin-top:20px; transition:background 0.2s;
+}
+.btn:hover { background:var(--accent2); }
+
+/* ── Footer ── */
+.footer {
+    background:var(--surface); border-top:1px solid var(--border);
+    padding:36px 20px; margin-top:40px;
+}
+.footer-inner {
+    max-width:1280px; margin:0 auto;
+    text-align:center; color:var(--text2);
+    font-size:13px;
+}
+.footer-note { color:var(--text3); font-size:11.5px; margin-top:6px; }
+
+/* ── Channel hero ── */
+.channel-hero {
+    max-width:1280px; margin:28px auto 12px; padding:0 20px;
+}
+.channel-hero-inner {
+    background:linear-gradient(135deg,
+        color-mix(in srgb, var(--ch-color) 25%, var(--surface)) 0%,
+        var(--surface) 70%);
+    border:1px solid var(--border);
+    border-left:5px solid var(--ch-color);
+    border-radius:var(--radius);
+    padding:42px 38px;
+}
+.channel-eyebrow {
+    display:inline-block; font-size:11px; font-weight:800;
+    letter-spacing:1.5px; color:var(--ch-color);
+    background:rgba(255,255,255,0.05);
+    padding:5px 12px; border-radius:4px;
+    text-transform:uppercase;
+}
+.channel-hero h1 {
+    font-family:var(--display);
+    font-size:48px; font-weight:900;
+    margin-top:14px; letter-spacing:-1.2px; line-height:1.05;
+}
+.channel-hero p {
+    color:var(--text2); font-size:15px; margin-top:8px;
+    max-width:620px;
+}
+.channel-stats {
+    display:flex; gap:10px; margin-top:18px;
+    color:var(--text2); font-size:13px;
+}
+.channel-stats b { color:var(--text); font-weight:800; }
+
+/* ── Trending rail (horizontal video reel) ── */
+.trend-rail-wrap {
+    max-width:1280px; margin:36px auto 8px; padding:0 20px;
+}
+.trend-rail-head {
+    display:flex; align-items:center; gap:12px; margin-bottom:16px;
+}
+.trend-rail-head h2 {
+    font-family:var(--display);
+    font-size:26px; font-weight:800; letter-spacing:-0.5px;
+}
+.trend-rail-head .live-dot {
+    width:10px; height:10px; border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 0 0 rgba(255,216,77,0.7);
+    animation:pulse 1.6s infinite;
+}
+@keyframes pulse {
+    0%   { box-shadow:0 0 0 0   rgba(255,216,77,0.7); }
+    70%  { box-shadow:0 0 0 10px rgba(255,216,77,0); }
+    100% { box-shadow:0 0 0 0   rgba(255,216,77,0); }
+}
+.trend-rail {
+    display:flex; gap:16px;
+    overflow-x:auto; scroll-snap-type:x mandatory;
+    padding-bottom:18px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    scrollbar-color:var(--surface3) transparent;
+}
+.trend-rail::-webkit-scrollbar { height:8px; }
+.trend-rail::-webkit-scrollbar-track { background:transparent; }
+.trend-rail::-webkit-scrollbar-thumb { background:var(--surface3); border-radius:4px; }
+.trend-card {
+    flex:0 0 200px; scroll-snap-align:start;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; overflow:hidden;
+    transition:transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+.trend-card:hover {
+    transform:translateY(-5px); border-color:var(--accent);
+    box-shadow:0 12px 28px rgba(255,51,85,0.18);
+}
+.trend-thumb {
+    aspect-ratio:9/16; background:#000; position:relative;
+}
+.trend-thumb video {
+    width:100%; height:100%; object-fit:cover;
+}
+.trend-rank {
+    position:absolute; top:8px; left:8px;
+    background:rgba(0,0,0,0.78); color:var(--gold);
+    padding:4px 10px; border-radius:14px;
+    font-size:11px; font-weight:800;
+    backdrop-filter:blur(6px);
+}
+.trend-meta { padding:11px 13px 14px; }
+.trend-meta h3 {
+    font-size:13px; font-weight:700; line-height:1.35;
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+/* ── Trending Now sticky widget ── */
+.trending-widget {
+    position:fixed; top:96px; right:20px;
+    width:260px; max-height:calc(100vh - 130px);
+    background:var(--surface);
+    border:1px solid var(--border); border-radius:14px;
+    padding:18px 18px 12px; z-index:50;
+    overflow-y:auto;
+    box-shadow:0 12px 36px rgba(0,0,0,0.45);
+}
+.trending-widget h3 {
+    font-family:var(--display);
+    font-size:13px; font-weight:800; letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--gold); margin-bottom:12px;
+    display:flex; align-items:center; gap:8px;
+}
+.trending-widget h3::before {
+    content:""; width:8px; height:8px; border-radius:50%;
+    background:var(--gold); animation:pulse 1.6s infinite;
+}
+.trending-widget ol { list-style:none; padding:0; margin:0; }
+.trending-widget li {
+    border-bottom:1px solid var(--border);
+}
+.trending-widget li:last-child { border-bottom:none; }
+.trending-widget li a {
+    display:flex; gap:12px; align-items:flex-start;
+    padding:11px 0;
+    transition:transform 0.15s;
+}
+.trending-widget li a:hover { transform:translateX(2px); }
+.trending-widget .tw-num {
+    font-family:var(--display);
+    font-size:22px; font-weight:900;
+    color:var(--text3); flex-shrink:0;
+    width:26px; line-height:1;
+}
+.trending-widget li:nth-child(1) .tw-num { color:var(--gold); }
+.trending-widget li:nth-child(2) .tw-num { color:var(--accent); }
+.trending-widget li:nth-child(3) .tw-num { color:var(--purple); }
+.trending-widget .tw-title {
+    font-size:12.5px; font-weight:600; line-height:1.4;
+    color:var(--text);
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+.trending-widget .tw-cat {
+    display:block; font-size:10px;
+    color:var(--text2); text-transform:uppercase;
+    letter-spacing:0.6px; margin-top:5px;
+}
+@media (max-width:1240px) { .trending-widget { display:none; } }
+
+/* ── Reading progress bar ── */
+.read-progress {
+    position:fixed; top:0; left:0; right:0;
+    height:3px; background:transparent;
+    z-index:200; pointer-events:none;
+}
+.read-progress-bar {
+    height:100%;
+    background:linear-gradient(90deg, var(--accent), var(--gold));
+    width:0%; transition:width 0.06s linear;
+}
+
+/* ── Infinite-scroll sentinel ── */
+.load-more-status {
+    text-align:center; padding:18px 20px 50px;
+    color:var(--text2); font-size:13px;
+}
+.load-more-status.loading::after {
+    content:" ··· memuat lagi"; color:var(--text3);
+}
+.load-more-status.done::after {
+    content:" — semua kandungan dipaparkan"; color:var(--text3);
+}
+
+/* ── Affiliate widget (Involve Asia) ── */
+.aff-widget {
+    max-width:800px; margin:28px auto 32px; padding:0 20px;
+}
+.aff-widget h3 {
+    font-family:var(--display);
+    font-size:14px; font-weight:800; letter-spacing:1.5px;
+    text-transform:uppercase; color:var(--text2);
+    margin-bottom:14px;
+}
+.aff-card {
+    display:grid;
+    grid-template-columns:auto 1fr auto; gap:14px;
+    align-items:center; margin-bottom:10px;
+    padding:16px 20px; border-radius:12px; color:#fff;
+    transition:transform 0.2s, box-shadow 0.2s;
+}
+.aff-card:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(0,0,0,0.35); }
+.aff-tag {
+    grid-row:1; grid-column:1;
+    font-size:9px; font-weight:900; letter-spacing:1px;
+    background:rgba(255,255,255,0.22); padding:3px 8px; border-radius:4px;
+}
+.aff-merchant {
+    grid-row:1; grid-column:2;
+    font-size:11px; font-weight:800; letter-spacing:1px; opacity:0.85;
+}
+.aff-label {
+    grid-column:1/3; grid-row:2;
+    font-size:16px; font-weight:700;
+}
+.aff-cta {
+    grid-row:1/3; grid-column:3;
+    font-size:13px; font-weight:700; white-space:nowrap;
+    background:rgba(255,255,255,0.18); padding:8px 14px; border-radius:24px;
+    backdrop-filter:blur(6px);
+}
+.aff-disclaimer {
+    font-size:11px; color:var(--text3); margin-top:10px; text-align:center;
+}
+
+/* ── AdSense slots ── */
+.ad-slot {
+    margin:22px 0; padding:10px 0;
+    min-height:90px;
+    display:flex; align-items:center; justify-content:center;
+    border-top:1px dashed var(--border);
+    border-bottom:1px dashed var(--border);
+}
+
+/* ── Newsletter ── */
+.newsletter {
+    max-width:800px; margin:28px auto; padding:0 20px;
+}
+.newsletter-inner {
+    background:linear-gradient(135deg, var(--surface2), var(--surface));
+    border:1px solid var(--border); border-radius:var(--radius);
+    padding:28px 26px; text-align:center;
+}
+.newsletter-inner h3 {
+    font-family:var(--display);
+    font-size:22px; font-weight:800; letter-spacing:-0.3px;
+}
+.newsletter-inner p {
+    color:var(--text2); font-size:14px; margin:8px 0 18px;
+}
+.newsletter-form {
+    display:flex; gap:8px; max-width:440px; margin:0 auto;
+}
+.newsletter-form input {
+    flex:1; background:var(--bg); color:var(--text);
+    border:1px solid var(--border); border-radius:8px;
+    padding:12px 16px; font-size:14px; font-family:inherit;
+}
+.newsletter-form input:focus {
+    outline:none; border-color:var(--accent);
+}
+.newsletter-form button {
+    background:var(--accent); color:#fff;
+    border:none; border-radius:8px;
+    padding:12px 22px; font-size:14px; font-weight:700;
+    cursor:pointer; transition:background 0.2s;
+    font-family:inherit;
+}
+.newsletter-form button:hover { background:var(--accent2); }
+
+/* ── Responsive ── */
+@media (max-width:700px) {
+    .aff-card { grid-template-columns:auto 1fr; gap:8px 12px; padding:14px 16px; }
+    .aff-cta { grid-row:3; grid-column:1/3; text-align:center; padding:8px; }
+    .newsletter-form { flex-direction:column; }
+    .channel-hero-inner { padding:28px 22px; }
+    .channel-hero h1 { font-size:30px; }
+    .featured-card { height:380px; }
+    .featured-text { padding:24px; }
+    .featured-text h1 { font-size:24px; }
+    .featured-sub { font-size:14px; }
+    .grid { grid-template-columns:1fr; }
+    .video-grid { grid-template-columns:repeat(2, 1fr); gap:12px; }
+    .video-info { padding:12px 14px; }
+    .video-info h3 { font-size:13px; }
+    .video-caption { display:none; }
+    .detail-head h1 { font-size:24px; }
+    .detail-hero { height:260px; }
+    .videos-hero-inner { padding:34px 20px; }
+    .videos-hero h1 { font-size:32px; }
+    .nav-item { padding:18px 11px; font-size:10.5px; }
+    .logo-text { font-size:14px; }
+    .logo-icon { height:36px; }
+}
+
+</style>
+</head>
+<body>
+<div class="header">
+    <div class="header-inner">
+        <a href="/" class="logo">
+            <img src="/assets/logo.png" class="logo-icon" alt="MVN">
+            <div class="logo-text"><span>Malaysia</span> Viral News</div>
+        </a>
+        <nav class="nav"><a href="/" class="nav-item active">Utama</a><a href="/videos/" class="nav-item">Video</a><a href="/c/news/" class="nav-item">BERITA</a><a href="/c/hiburan/" class="nav-item">HIBURAN</a><a href="/c/lifestyle/" class="nav-item">LIFESTYLE</a><a href="/c/sukan/" class="nav-item">SUKAN</a><a href="/c/tech/" class="nav-item">TECH</a></nav>
+    </div>
+</div>
+<main>
+    <div class="read-progress"><div class="read-progress-bar"></div></div>
+    <article class="detail">
+        <a href="/" class="back">← Kembali ke Utama</a>
+        <div class="detail-head">
+            <span class="badge" style="background:#d63031">TERKINI</span>
+            <h1>Wanita maut,empat cedera dalam kemalangan lima kenderaan di Lahad Datu</h1>
+            <p class="detail-sub">Kemalangan berlaku di Jalan Silam, Batu 8, Lahad Datu, Sabah</p>
+            <div class="detail-meta">
+                <span>2026-04-12 01:38:27</span>
+                <span>·</span>
+                <span>11 hari lalu</span>
+            </div>
+        </div>
+        <div class="detail-hero" style="background-image:url('https://assets.bharian.com.my/images/articles/BH11MAUTU-O_BHfield_image_listing_featured_v2.var_1775913845.jpg')"></div>
+        <div class="detail-body"><p>Kemalangan berlaku pada petang hari di sekitar jam 4.30 tengah hari di Batu 8, Jalan Silam, Lahad Datu. Mengikut maklumat awal, lima kenderaan telah terlibat dalam insiden itu, termasuk sebuah lori, sebuah kereta dan beberapa kenderaan lain. Kenderaan yang terlibat dalam kemalangan itu terus terus bergerak ke arah yang sama sebelum terjadi tabrakan berlaku. Pihak berkuasa mendakwa bahawa kenderaan yang sedang bergerak di kawasan itu mengalami kekangan lalu lintas sebelum kemalangan berlaku.</p><p>Pihak keselamatan terlibat dalam penyelidikan insiden itu dan mengesahkan bahawa satu daripada kenderaan yang terlibat dalam kemalangan itu terlibat dalam tabrakan dengan sebuah lori. Kenderaan lain yang terlibat dalam insiden itu juga mengalami kerosakan berat, dan beberapa penumpangnya tercedera. Pihak keselamatan telah memindahkan mangsa ke hospital terdekat untuk rawatan.</p><p>Kemalangan ini berlaku di kawasan yang sering dilaporkan mengalami kemalangan kerana kepadatan lalu lintas dan keadaan jalan yang tidak stabil. Jalan Silam adalah salah satu laluan utama menuju ke kawasan kawasan perindustrian dan pelabuhan di Lahad Datu. Pihak berkuasa kawasan telah mengeluarkan notis kepada pengguna jalan raya untuk berhati-hati apabila melawat kawasan tersebut.</p><p>Keseluruhan insiden ini telah menyebabkan kemelut lalu lintas selama beberapa jam di kawasan sekitar. Pihak berkuasa kawasan telah menyerahkan keseluruhan maklumat kepada pihak polis untuk penyelidikan lanjut. Kebanyakan mangsa telah dibawa ke hospital setempat untuk rawatan, manakala satu daripada mangsa terbunuh akibat cedera yang dialami. Pihak keselamatan menggesa pengguna jalan raya untuk berhati-hati dan mengelakkan kenderaan dari mengemudi dengan laju tinggi di kawasan yang sensitif.</p></div>
+    </article>
+    
+    
+    <section class="related"><h2>Berita Berkaitan</h2><div class="related-grid">
+            <a href="/artikel/2/" class="related-card">
+                <div class="related-thumb" style="background-image:url('https://www.sinarharian.com.my/uploads/images/2026/04/11/3488010.webp')">
+                    <span class="badge" style="background:#d63031">TERKINI</span>
+                </div>
+                <h4>'Tempurung kepala pecah, pendarahan dalam otak'</h4>
+                <span class="meta">9 hari lalu</span>
+            </a>
+            <a href="/artikel/3/" class="related-card">
+                <div class="related-thumb" style="background-image:url('https://www.sinarharian.com.my/uploads/images/2026/04/13/3490449.webp')">
+                    <span class="badge" style="background:#d63031">TERKINI</span>
+                </div>
+                <h4>Pemotongan Gading Gajah Kelat di Jepun Berdasarkan Penilaian Klinikal</h4>
+                <span class="meta">9 hari lalu</span>
+            </a>
+            <a href="/artikel/5/" class="related-card">
+                <div class="related-thumb" style="background-image:url('https://www.sinarharian.com.my/uploads/images/2026/04/13/3489434.webp')">
+                    <span class="badge" style="background:#d63031">TERKINI</span>
+                </div>
+                <h4>Perkahwinan Hanya Sehari, Suami Rupa-Rupa Wanita</h4>
+                <span class="meta">9 hari lalu</span>
+            </a>
+            <a href="/artikel/0/" class="related-card">
+                <div class="related-thumb" style="background-image:url('https://ichef.bbci.co.uk/news/1024/branded_news/7a79/live/1fe25240-369c-11f1-a64d-95608276955d.jpg')">
+                    <span class="badge" style="background:#e67e22">DUNIA</span>
+                </div>
+                <h4>Rundingan Perang Iran–AS Terhenti Selepas Gagal di Washington</h4>
+                <span class="meta">9 hari lalu</span>
+            </a></div></section>
+    <aside class="trending-widget"><h3>Trending Now</h3><ol>
+        <li><a href="/video/1/">
+          <span class="tw-num">01</span>
+          <div>
+            <div class="tw-title">#fyp</div>
+            <span class="tw-cat">sosial</span>
+          </div>
+        </a></li>
+        <li><a href="/video/3/">
+          <span class="tw-num">02</span>
+          <div>
+            <div class="tw-title">Kegembiraan Kecil, Kebahagiaan Besar</div>
+            <span class="tw-cat">sosial</span>
+          </div>
+        </a></li>
+        <li><a href="/video/18/">
+          <span class="tw-num">03</span>
+          <div>
+            <div class="tw-title">Naik Pesawat, Dapat Tahu Masa Berlepas Artemis 2</div>
+            <span class="tw-cat">sosial</span>
+          </div>
+        </a></li>
+        <li><a href="/video/22/">
+          <span class="tw-num">04</span>
+          <div>
+            <div class="tw-title">Belaku di PPR Sri Malaysia, Tak Tahu Kena Kutip Ke Belum</div>
+            <span class="tw-cat">sosial</span>
+          </div>
+        </a></li>
+        <li><a href="/video/0/">
+          <span class="tw-num">05</span>
+          <div>
+            <div class="tw-title">#fyp</div>
+            <span class="tw-cat">sosial</span>
+          </div>
+        </a></li></ol></aside>
+    <script>
+    (function() {
+      var bar = document.querySelector('.read-progress-bar');
+      if (!bar) return;
+      function update() {
+        var doc = document.documentElement;
+        var scrolled = doc.scrollTop || document.body.scrollTop;
+        var max = (doc.scrollHeight || document.body.scrollHeight) - doc.clientHeight;
+        var pct = max > 0 ? (scrolled / max) * 100 : 0;
+        bar.style.width = pct + '%';
+      }
+      window.addEventListener('scroll', update, {passive:true});
+      window.addEventListener('resize', update);
+      update();
+    })();
+    </script></main>
+<footer class="footer">
+    <div class="footer-inner">
+        <p>&copy; 2026 Malaysia Viral News — Semua hak cipta terpelihara.</p>
+        <p class="footer-note">Kandungan ditulis semula secara profesional dari pelbagai sumber awam.</p>
+    </div>
+</footer>
+</body>
+</html>

@@ -151,7 +151,17 @@
 
     if (error) {
       label.innerHTML = '<span class="err">Authorisation failed</span>';
-      box.textContent = error;
+      var hint = "";
+      if (/non_sandbox|sandbox_target/i.test(error)) {
+        hint = "\n\nThe TikTok account you logged in with is not on the app's " +
+               "Target Users list. Open the Developer Portal → your app → " +
+               "Sandbox → Target users → Add TikTok account, then try again.";
+      } else if (/redirect/i.test(error)) {
+        hint = "\n\nThe redirect URI must match the one registered in the " +
+               "TikTok Developer Portal exactly (same scheme, host, path, " +
+               "trailing slash).";
+      }
+      box.textContent = error + hint;
       btn.style.display = "none";
       return;
     }

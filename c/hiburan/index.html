@@ -51,10 +51,8 @@ img { display:block; }
     display:flex; align-items:center; justify-content:space-between;
     height:64px; gap:24px;
 }
-.logo { display:flex; align-items:center; gap:12px; flex-shrink:0; }
-.logo-icon { height:42px; width:auto; }
-.logo-text { font-size:17px; font-weight:800; letter-spacing:-0.3px; }
-.logo-text span { color:var(--accent); }
+.logo { display:flex; align-items:center; flex-shrink:0; text-decoration:none; }
+.logo-mark { height:42px; width:auto; display:block; object-fit:contain; max-width:min(200px,44vw); }
 .nav {
     display:flex; gap:0;
     overflow-x:auto; -webkit-overflow-scrolling:touch;
@@ -215,13 +213,27 @@ img { display:block; }
 .video-thumb {
     position:relative; width:100%;
     aspect-ratio:9/16; overflow:hidden;
-    background:#000;
+    background:linear-gradient(160deg, #14141c 0%, #060608 55%, #0a0a0e 100%);
 }
-.video-thumb video {
+/* Poster image always visible; <video> often stays black until first decoded frame */
+.video-thumb .video-poster-img {
+    position:absolute; inset:0;
     width:100%; height:100%; object-fit:cover;
+    z-index:1;
+}
+.video-thumb .video-hover-preview {
+    position:absolute; inset:0;
+    width:100%; height:100%; object-fit:cover;
+    z-index:2;
+    opacity:0;
+    transition:opacity 0.35s ease;
+}
+.video-card:hover .video-thumb .video-hover-preview,
+.video-card:focus-within .video-thumb .video-hover-preview {
+    opacity:1;
 }
 .video-thumb .badge {
-    position:absolute; top:14px; left:14px; z-index:2;
+    position:absolute; top:14px; left:14px; z-index:5;
 }
 .video-score {
     position:absolute; top:14px; right:14px;
@@ -229,6 +241,7 @@ img { display:block; }
     padding:5px 11px; border-radius:20px;
     font-size:11px; font-weight:700;
     backdrop-filter:blur(8px);
+    z-index:5;
 }
 .video-play-icon {
     position:absolute; top:50%; left:50%;
@@ -241,6 +254,7 @@ img { display:block; }
     box-shadow:0 8px 24px rgba(0,0,0,0.4);
     transition:transform 0.2s;
     pointer-events:none;
+    z-index:5;
 }
 .video-card:hover .video-play-icon { transform:translate(-50%, -50%) scale(1.1); }
 .video-info { padding:16px 18px; }
@@ -304,13 +318,30 @@ img { display:block; }
 }
 .video-player-wrap {
     background:#000; border-radius:var(--radius); overflow:hidden;
-    max-height:85vh;
+    max-height:85vh; position:relative;
     display:flex; justify-content:center;
     margin-bottom:28px;
 }
 .video-player-wrap video {
     max-width:100%; max-height:85vh;
     width:auto; height:auto;
+}
+.video-fallback { display:none; }
+.video-player-wrap.video-unavailable video { display:none; }
+.video-player-wrap.video-unavailable {
+    aspect-ratio:16/10; align-items:center;
+    background:linear-gradient(135deg,#1a1a22,#0a0a0f);
+}
+.video-player-wrap.video-unavailable .video-fallback {
+    display:flex; align-items:center; justify-content:center; padding:32px;
+    text-align:center;
+}
+.video-fallback .vf-title {
+    font-family:var(--display); font-size:22px; font-weight:800;
+    color:var(--accent); margin-bottom:10px;
+}
+.video-fallback p {
+    color:var(--text2); font-size:14px; line-height:1.6; max-width:420px;
 }
 .video-body { font-size:16px; line-height:1.8; color:#cccce0; max-width:760px; }
 .video-lead {
@@ -457,7 +488,7 @@ img { display:block; }
 .trend-rail::-webkit-scrollbar-track { background:transparent; }
 .trend-rail::-webkit-scrollbar-thumb { background:var(--surface3); border-radius:4px; }
 .trend-card {
-    flex:0 0 200px; scroll-snap-align:start;
+    flex:0 0 228px; scroll-snap-align:start;
     background:var(--surface); border:1px solid var(--border);
     border-radius:12px; overflow:hidden;
     transition:transform 0.25s, border-color 0.25s, box-shadow 0.25s;
@@ -467,10 +498,26 @@ img { display:block; }
     box-shadow:0 12px 28px rgba(255,51,85,0.18);
 }
 .trend-thumb {
-    aspect-ratio:9/16; background:#000; position:relative;
+    aspect-ratio:9/16;
+    background:linear-gradient(160deg, #14141c 0%, #060608 55%, #0a0a0e 100%);
+    position:relative;
+    overflow:hidden;
 }
-.trend-thumb video {
+.trend-thumb .video-poster-img {
+    position:absolute; inset:0;
     width:100%; height:100%; object-fit:cover;
+    z-index:1;
+}
+.trend-thumb .video-hover-preview {
+    position:absolute; inset:0;
+    width:100%; height:100%; object-fit:cover;
+    z-index:2;
+    opacity:0;
+    transition:opacity 0.35s ease;
+}
+.trend-card:hover .trend-thumb .video-hover-preview,
+.trend-card:focus-within .trend-thumb .video-hover-preview {
+    opacity:1;
 }
 .trend-rank {
     position:absolute; top:8px; left:8px;
@@ -478,12 +525,28 @@ img { display:block; }
     padding:4px 10px; border-radius:14px;
     font-size:11px; font-weight:800;
     backdrop-filter:blur(6px);
+    z-index:5;
 }
-.trend-meta { padding:11px 13px 14px; }
+.trend-meta {
+    padding:16px 16px 18px;
+}
+.trend-meta .trend-eyebrow {
+    font-size:10px; font-weight:800;
+    letter-spacing:0.65px; text-transform:uppercase;
+    color:var(--text3); margin:0 0 7px 0;
+    display:block;
+}
 .trend-meta h3 {
-    font-size:13px; font-weight:700; line-height:1.35;
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    margin:0;
+    font-size:15px; font-weight:700; line-height:1.45;
+    letter-spacing:-0.15px;
+    color:var(--text);
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
     overflow:hidden;
+}
+.trend-meta .trend-sub {
+    display:block; margin-top:11px;
+    font-size:12px; color:var(--text2);
 }
 
 /* ── Trending Now sticky widget ── */
@@ -671,8 +734,7 @@ img { display:block; }
     .videos-hero-inner { padding:34px 20px; }
     .videos-hero h1 { font-size:32px; }
     .nav-item { padding:18px 11px; font-size:10.5px; }
-    .logo-text { font-size:14px; }
-    .logo-icon { height:36px; }
+    .logo-mark { height:36px; max-width:min(180px,50vw); }
 }
 
 </style>
@@ -680,9 +742,8 @@ img { display:block; }
 <body>
 <div class="header">
     <div class="header-inner">
-        <a href="/" class="logo">
-            <img src="/assets/logo.png" class="logo-icon" alt="MVN">
-            <div class="logo-text"><span>Malaysia</span> Viral News</div>
+        <a href="/" class="logo" aria-label="Malaysia Viral News">
+            <img src="/assets/logo.png" class="logo-mark" alt="Malaysia Viral News" width="180" height="42">
         </a>
         <nav class="nav"><a href="/" class="nav-item">Utama</a><a href="/videos/" class="nav-item">Video</a><a href="/c/news/" class="nav-item">BERITA</a><a href="/c/hiburan/" class="nav-item active">HIBURAN</a><a href="/c/lifestyle/" class="nav-item">LIFESTYLE</a><a href="/c/sukan/" class="nav-item">SUKAN</a><a href="/c/tech/" class="nav-item">TECH</a></nav>
     </div>
@@ -696,97 +757,102 @@ img { display:block; }
         <div class="channel-stats">
           <span><b>1</b> artikel</span>
           <span>·</span>
-          <span><b>2</b> video</span>
+          <span><b>3</b> video</span>
         </div>
       </div>
     </section>
     
         <section class="featured">
-          <a href="/artikel/10/" class="featured-card">
-            <img src="https://assets.bharian.com.my/images/articles/IralalikecamanONL_BHfield_image_listing_featured_v2.var_1775967805.jpg" alt="" class="featured-img" onerror="this.style.display='none'">
+          <a href="/artikel/4/" class="featured-card">
+            <img src="https://www.utusan.com.my/wp-content/uploads/2026/04/0a1bc5e5-3bb3-423f-b124-6d46fb7be378.jpeg" alt="" class="featured-img" onerror="this.style.display='none'">
             <div class="featured-grad"></div>
             <div class="featured-text">
               <span class="badge" style="background:#a155c9">HIBURAN</span>
-              <h1>Ira Kazar tunjuk ketangguhan selepas kecaman netizen</h1>
-              <p class="featured-sub">Artis wanita itu kini tidak terkesan dengan kritikan dari media sosial</p>
-              <p class="meta">11 hari lalu</p>
+              <h1>MADAM Luncurkan Album Sulung dengan Lagu Mona Lisa</h1>
+              <p class="featured-sub">Kumpulan rock Malaysia menghadirkan karya baru mereka di pasaran.</p>
+              <p class="meta">38 minit lalu</p>
             </div>
           </a>
         </section>
         <section class="section-head"><h2>Video Hiburan</h2></section><section class="video-grid">
-            <a href="/video/13/" class="video-card">
+            <a href="/video/0/" class="video-card">
                 <div class="video-thumb">
-                    <video preload="metadata" muted playsinline loop
-                           poster="https://instagram.fkul4-4.fna.fbcdn.net/v/t51.71878-15/660963986_2498114430635207_4022304020549582822_n.jpg?stp=dst-jpg_e15_tt6&amp;_nc_cat=102&amp;ig_cache_key=Mzg3MDQ4MDg5MTQ3MDUxMzUzNg%3D%3D.3-ccb7-5&amp;ccb=7-5&amp;_nc_sid=58cdad&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjY0MHgxMTM2LnNkci5DMyJ9&amp;_nc_ohc=c_l9MFIt0MkQ7kNvwG22unR&amp;_nc_oc=Ado_MonhHFRCsH3rQX3wloEVWhCvqDTzI67uUcOIhjYjDk6lmD3pTuHTjVZk6uWKRAMrqyHFnxrehlHSxpQUndbh&amp;_nc_ad=z-m&amp;_nc_cid=0&amp;_nc_zt=23&amp;_nc_ht=instagram.fkul4-4.fna&amp;_nc_gid=KiQMEdR8JzxaA_GbCSK9UA&amp;_nc_ss=7a32e&amp;oh=00_Af130DGSBKPvun5Kh_Q56xjZmRusMRXs2jCgkEQNzwZGTA&amp;oe=69E11DEB"
-                           onmouseover="this.play()"
-                           onmouseout="this.pause(); this.currentTime=0;">
-                        <source src="/videos_files/mvn_video_20260412_135923.mp4" type="video/mp4">
-                    </video>
+                    <img src="https://instagram.fkul4-5.fna.fbcdn.net/v/t51.71878-15/662424650_2013720215845684_7460295920209659451_n.jpg?stp=dst-jpg_e15_tt6&amp;_nc_cat=110&amp;ig_cache_key=Mzg3MjU2NDEyNzAzODgwNjU1MA%3D%3D.3-ccb7-5&amp;ccb=7-5&amp;_nc_sid=58cdad&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjY0MHgxMTM2LnNkci5DMyJ9&amp;_nc_ohc=qbav3Q0qQ8UQ7kNvwEYHQUZ&amp;_nc_oc=AdoX4_jCw4Glfaf16VavhRnONFYq2mCQIv2Qcwk8IiOCB8zyhj6kBAdVLkUSNg03RiQd4Tq2l-jOX6YSU_5tVpDp&amp;_nc_ad=z-m&amp;_nc_cid=0&amp;_nc_zt=23&amp;_nc_ht=instagram.fkul4-5.fna&amp;_nc_gid=2XkTzHg_JkeOaHH81hLSPA&amp;_nc_ss=7a22e&amp;oh=00_Af0jnvX1guvw7sAutFrmyGrNrbOPfhqIyYPt1ftvUdUG5A&amp;oe=69F0B711" alt="" class="video-poster-img" loading="lazy" decoding="async" onerror="this.style.opacity='0'"><video class="video-hover-preview" preload="metadata" muted playsinline loop poster="https://instagram.fkul4-5.fna.fbcdn.net/v/t51.71878-15/662424650_2013720215845684_7460295920209659451_n.jpg?stp=dst-jpg_e15_tt6&amp;_nc_cat=110&amp;ig_cache_key=Mzg3MjU2NDEyNzAzODgwNjU1MA%3D%3D.3-ccb7-5&amp;ccb=7-5&amp;_nc_sid=58cdad&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjY0MHgxMTM2LnNkci5DMyJ9&amp;_nc_ohc=qbav3Q0qQ8UQ7kNvwEYHQUZ&amp;_nc_oc=AdoX4_jCw4Glfaf16VavhRnONFYq2mCQIv2Qcwk8IiOCB8zyhj6kBAdVLkUSNg03RiQd4Tq2l-jOX6YSU_5tVpDp&amp;_nc_ad=z-m&amp;_nc_cid=0&amp;_nc_zt=23&amp;_nc_ht=instagram.fkul4-5.fna&amp;_nc_gid=2XkTzHg_JkeOaHH81hLSPA&amp;_nc_ss=7a22e&amp;oh=00_Af0jnvX1guvw7sAutFrmyGrNrbOPfhqIyYPt1ftvUdUG5A&amp;oe=69F0B711" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"><source src="/videos_files/mvn_video_20260424_130303.mp4" type="video/mp4"></video>
                     <div class="video-play-icon">▶</div>
                     <span class="badge" style="background:#a155c9">HIBURAN</span>
-                    <div class="video-score">🔥 60</div>
+                    <div class="video-score">🔥 36.0</div>
                 </div>
                 <div class="video-info">
-                    <h3>Fattah Amin tegaskan Prinsip Hidup Tidak Boleh Diabaikan</h3>
+                    <h3>Video Tular: Artis Muda Tampilkan Persembahan Menakjubkan di Pesta Kebanggaan</h3>
                     <div class="video-meta">
-                        <span>11 hari lalu</span>
-                        <span>·</span><span>853 suka · 491 komen</span>
+                        <span>14 minit lalu</span>
+                        <span>·</span><span>59 suka · 10 komen</span>
                     </div>
                 </div>
             </a>
-            <a href="/video/16/" class="video-card">
+            <a href="/video/2/" class="video-card">
                 <div class="video-thumb">
-                    <video preload="metadata" muted playsinline loop
-                           poster="https://instagram.fkul4-4.fna.fbcdn.net/v/t51.82787-15/656196947_18034198808789097_3663844979415900225_n.jpg?stp=dst-jpg_e15_tt6&amp;_nc_cat=102&amp;ig_cache_key=Mzg1ODQ3OTM2OTIyMDU5ODMyMg%3D%3D.3-ccb7-5&amp;ccb=7-5&amp;_nc_sid=58cdad&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjcyMHg0MDUuc2RyLkMzIn0%3D&amp;_nc_ohc=RzkErPM5X04Q7kNvwEBMelH&amp;_nc_oc=Adrq5hsnSKsuYvW6Yf1QGGDlJ6QofFuPJ2Hr6H8rxWh1Vjf2ovhiqQfx-gseDlw2wh7cFsYbxObUexpsg5P4hnDK&amp;_nc_ad=z-m&amp;_nc_cid=0&amp;_nc_zt=23&amp;_nc_ht=instagram.fkul4-4.fna&amp;_nc_gid=MnoUdVaMBPlwZRw1jq8BPw&amp;_nc_ss=7a32e&amp;oh=00_Af06-1B0Dham2AMJ-J2xD8WrW6d_yPE9_et6UaXOb6jpGw&amp;oe=69E0ED76"
-                           onmouseover="this.play()"
-                           onmouseout="this.pause(); this.currentTime=0;">
-                        <source src="/videos_files/mvn_video_20260412_113917.mp4" type="video/mp4">
-                    </video>
+                    <img src="https://instagram.fkul4-5.fna.fbcdn.net/v/t51.71878-15/672406906_1509704603825560_2007914984622682142_n.jpg?stp=dst-jpg_e15_tt6&amp;_nc_cat=107&amp;ig_cache_key=Mzg3NzkyMTQ3Mzg1NjM4ODgzMA%3D%3D.3-ccb7-5&amp;ccb=7-5&amp;_nc_sid=58cdad&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjY0MHgxMTM2LnNkci5DMyJ9&amp;_nc_ohc=XHNobyy-l50Q7kNvwEymlkc&amp;_nc_oc=AdokMe9_V23naE6_gN8ycmXbi0L-dSiJtOJrA0pvwetg2bI-yj_RLsjAUShx15ChsEx8F98AniZc5pEgTzCmsdBp&amp;_nc_ad=z-m&amp;_nc_cid=0&amp;_nc_zt=23&amp;_nc_ht=instagram.fkul4-5.fna&amp;_nc_gid=DEPrBdiiqG3CYvHPPVE6ug&amp;_nc_ss=7a22e&amp;oh=00_Af26yFm8rOrBykh0ZaXwELavwZb4m-ElJZms3Nfh04FdVw&amp;oe=69F0BCF6" alt="" class="video-poster-img" loading="lazy" decoding="async" onerror="this.style.opacity='0'"><video class="video-hover-preview" preload="metadata" muted playsinline loop poster="https://instagram.fkul4-5.fna.fbcdn.net/v/t51.71878-15/672406906_1509704603825560_2007914984622682142_n.jpg?stp=dst-jpg_e15_tt6&amp;_nc_cat=107&amp;ig_cache_key=Mzg3NzkyMTQ3Mzg1NjM4ODgzMA%3D%3D.3-ccb7-5&amp;ccb=7-5&amp;_nc_sid=58cdad&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjY0MHgxMTM2LnNkci5DMyJ9&amp;_nc_ohc=XHNobyy-l50Q7kNvwEymlkc&amp;_nc_oc=AdokMe9_V23naE6_gN8ycmXbi0L-dSiJtOJrA0pvwetg2bI-yj_RLsjAUShx15ChsEx8F98AniZc5pEgTzCmsdBp&amp;_nc_ad=z-m&amp;_nc_cid=0&amp;_nc_zt=23&amp;_nc_ht=instagram.fkul4-5.fna&amp;_nc_gid=DEPrBdiiqG3CYvHPPVE6ug&amp;_nc_ss=7a22e&amp;oh=00_Af26yFm8rOrBykh0ZaXwELavwZb4m-ElJZms3Nfh04FdVw&amp;oe=69F0BCF6" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"><source src="/videos_files/mvn_video_20260424_130052.mp4" type="video/mp4"></video>
                     <div class="video-play-icon">▶</div>
                     <span class="badge" style="background:#a155c9">HIBURAN</span>
-                    <div class="video-score">🔥 71</div>
+                    <div class="video-score">🔥 53.0</div>
                 </div>
                 <div class="video-info">
-                    <h3>Hujan dan Lagu: Perasaan yang Terkumpul</h3>
+                    <h3>Selepas Siti Nurhaliza, Siapa Penyanyi No.1 Malaysia?</h3>
                     <div class="video-meta">
-                        <span>11 hari lalu</span>
-                        <span>·</span><span>4.5K suka · 12 komen</span>
+                        <span>15 minit lalu</span>
+                        <span>·</span><span>833 suka · 34 komen</span>
+                    </div>
+                </div>
+            </a>
+            <a href="/video/4/" class="video-card">
+                <div class="video-thumb">
+                    <img src="https://instagram.fkul4-5.fna.fbcdn.net/v/t51.71878-15/671247245_980474504556915_3435374301757008966_n.jpg?stp=dst-jpg_e15_tt6&amp;_nc_cat=108&amp;ig_cache_key=Mzg4MDg1OTAzMjI5OTQwNTMzNw%3D%3D.3-ccb7-5&amp;ccb=7-5&amp;_nc_sid=58cdad&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjY0MHgxMTM2LnNkci5DMyJ9&amp;_nc_ohc=sNQCzpkOJEIQ7kNvwGrXMq8&amp;_nc_oc=AdrpDSmvyYvPSzvEkx96ufGbRXT34WT9jiWG_G7pKwDuCLSAZfqYW8DkriiCAU4MsQz8_k_nnqpVKQscWryWyw1L&amp;_nc_ad=z-m&amp;_nc_cid=0&amp;_nc_zt=23&amp;_nc_ht=instagram.fkul4-5.fna&amp;_nc_gid=2XkTzHg_JkeOaHH81hLSPA&amp;_nc_ss=7a22e&amp;oh=00_Af0fSNTbz3uBO3p6Yqmhlulam5sM6NncqPKl1HIOLX-qiQ&amp;oe=69F0CF58" alt="" class="video-poster-img" loading="lazy" decoding="async" onerror="this.style.opacity='0'"><video class="video-hover-preview" preload="metadata" muted playsinline loop poster="https://instagram.fkul4-5.fna.fbcdn.net/v/t51.71878-15/671247245_980474504556915_3435374301757008966_n.jpg?stp=dst-jpg_e15_tt6&amp;_nc_cat=108&amp;ig_cache_key=Mzg4MDg1OTAzMjI5OTQwNTMzNw%3D%3D.3-ccb7-5&amp;ccb=7-5&amp;_nc_sid=58cdad&amp;efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjY0MHgxMTM2LnNkci5DMyJ9&amp;_nc_ohc=sNQCzpkOJEIQ7kNvwGrXMq8&amp;_nc_oc=AdrpDSmvyYvPSzvEkx96ufGbRXT34WT9jiWG_G7pKwDuCLSAZfqYW8DkriiCAU4MsQz8_k_nnqpVKQscWryWyw1L&amp;_nc_ad=z-m&amp;_nc_cid=0&amp;_nc_zt=23&amp;_nc_ht=instagram.fkul4-5.fna&amp;_nc_gid=2XkTzHg_JkeOaHH81hLSPA&amp;_nc_ss=7a22e&amp;oh=00_Af0fSNTbz3uBO3p6Yqmhlulam5sM6NncqPKl1HIOLX-qiQ&amp;oe=69F0CF58" onmouseover="this.play()" onmouseout="this.pause(); this.currentTime=0;"><source src="/videos_files/mvn_video_20260424_125903.mp4" type="video/mp4"></video>
+                    <div class="video-play-icon">▶</div>
+                    <span class="badge" style="background:#a155c9">HIBURAN</span>
+                    <div class="video-score">🔥 75.0</div>
+                </div>
+                <div class="video-info">
+                    <h3>Video Tular: Artis Muda Tampilkan Persembahan Menakjubkan di Panggung Kecil</h3>
+                    <div class="video-meta">
+                        <span>18 minit lalu</span>
+                        <span>·</span><span>4.8K suka · 53 komen</span>
                     </div>
                 </div>
             </a></section><aside class="trending-widget"><h3>Trending Now</h3><ol>
-        <li><a href="/video/1/">
+        <li><a href="/video/3/">
           <span class="tw-num">01</span>
           <div>
-            <div class="tw-title">#fyp</div>
+            <div class="tw-title">Beginilah Kehidupan Baru Bermula Selepas Rosak Sepenuhnya</div>
             <span class="tw-cat">sosial</span>
           </div>
         </a></li>
-        <li><a href="/video/3/">
+        <li><a href="/video/4/">
           <span class="tw-num">02</span>
           <div>
-            <div class="tw-title">Kegembiraan Kecil, Kebahagiaan Besar</div>
-            <span class="tw-cat">sosial</span>
+            <div class="tw-title">Video Tular: Artis Muda Tampilkan Persembahan Menakjubkan di Panggung Kecil</div>
+            <span class="tw-cat">hiburan</span>
           </div>
         </a></li>
-        <li><a href="/video/18/">
+        <li><a href="/video/1/">
           <span class="tw-num">03</span>
           <div>
-            <div class="tw-title">Naik Pesawat, Dapat Tahu Masa Berlepas Artemis 2</div>
+            <div class="tw-title">Mengapa Saya Sering Berkomunikasi dalam Bahasa Inggeris Ketika Membincangkan Budaya Malaysia</div>
             <span class="tw-cat">sosial</span>
           </div>
         </a></li>
-        <li><a href="/video/22/">
+        <li><a href="/artikel/2/">
           <span class="tw-num">04</span>
           <div>
-            <div class="tw-title">Belaku di PPR Sri Malaysia, Tak Tahu Kena Kutip Ke Belum</div>
-            <span class="tw-cat">sosial</span>
+            <div class="tw-title">Kecelakaan Helikopter Laut Malaysia Paling Maut Dalam Dua Tahun</div>
+            <span class="tw-cat">berita</span>
           </div>
         </a></li>
-        <li><a href="/video/0/">
+        <li><a href="/video/2/">
           <span class="tw-num">05</span>
           <div>
-            <div class="tw-title">#fyp</div>
-            <span class="tw-cat">sosial</span>
+            <div class="tw-title">Selepas Siti Nurhaliza, Siapa Penyanyi No.1 Malaysia?</div>
+            <span class="tw-cat">hiburan</span>
           </div>
         </a></li></ol></aside></main>
 <footer class="footer">

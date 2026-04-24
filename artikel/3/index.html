@@ -51,10 +51,8 @@ img { display:block; }
     display:flex; align-items:center; justify-content:space-between;
     height:64px; gap:24px;
 }
-.logo { display:flex; align-items:center; gap:12px; flex-shrink:0; }
-.logo-icon { height:42px; width:auto; }
-.logo-text { font-size:17px; font-weight:800; letter-spacing:-0.3px; }
-.logo-text span { color:var(--accent); }
+.logo { display:flex; align-items:center; flex-shrink:0; text-decoration:none; }
+.logo-mark { height:42px; width:auto; display:block; object-fit:contain; max-width:min(200px,44vw); }
 .nav {
     display:flex; gap:0;
     overflow-x:auto; -webkit-overflow-scrolling:touch;
@@ -215,13 +213,27 @@ img { display:block; }
 .video-thumb {
     position:relative; width:100%;
     aspect-ratio:9/16; overflow:hidden;
-    background:#000;
+    background:linear-gradient(160deg, #14141c 0%, #060608 55%, #0a0a0e 100%);
 }
-.video-thumb video {
+/* Poster image always visible; <video> often stays black until first decoded frame */
+.video-thumb .video-poster-img {
+    position:absolute; inset:0;
     width:100%; height:100%; object-fit:cover;
+    z-index:1;
+}
+.video-thumb .video-hover-preview {
+    position:absolute; inset:0;
+    width:100%; height:100%; object-fit:cover;
+    z-index:2;
+    opacity:0;
+    transition:opacity 0.35s ease;
+}
+.video-card:hover .video-thumb .video-hover-preview,
+.video-card:focus-within .video-thumb .video-hover-preview {
+    opacity:1;
 }
 .video-thumb .badge {
-    position:absolute; top:14px; left:14px; z-index:2;
+    position:absolute; top:14px; left:14px; z-index:5;
 }
 .video-score {
     position:absolute; top:14px; right:14px;
@@ -229,6 +241,7 @@ img { display:block; }
     padding:5px 11px; border-radius:20px;
     font-size:11px; font-weight:700;
     backdrop-filter:blur(8px);
+    z-index:5;
 }
 .video-play-icon {
     position:absolute; top:50%; left:50%;
@@ -241,6 +254,7 @@ img { display:block; }
     box-shadow:0 8px 24px rgba(0,0,0,0.4);
     transition:transform 0.2s;
     pointer-events:none;
+    z-index:5;
 }
 .video-card:hover .video-play-icon { transform:translate(-50%, -50%) scale(1.1); }
 .video-info { padding:16px 18px; }
@@ -304,13 +318,30 @@ img { display:block; }
 }
 .video-player-wrap {
     background:#000; border-radius:var(--radius); overflow:hidden;
-    max-height:85vh;
+    max-height:85vh; position:relative;
     display:flex; justify-content:center;
     margin-bottom:28px;
 }
 .video-player-wrap video {
     max-width:100%; max-height:85vh;
     width:auto; height:auto;
+}
+.video-fallback { display:none; }
+.video-player-wrap.video-unavailable video { display:none; }
+.video-player-wrap.video-unavailable {
+    aspect-ratio:16/10; align-items:center;
+    background:linear-gradient(135deg,#1a1a22,#0a0a0f);
+}
+.video-player-wrap.video-unavailable .video-fallback {
+    display:flex; align-items:center; justify-content:center; padding:32px;
+    text-align:center;
+}
+.video-fallback .vf-title {
+    font-family:var(--display); font-size:22px; font-weight:800;
+    color:var(--accent); margin-bottom:10px;
+}
+.video-fallback p {
+    color:var(--text2); font-size:14px; line-height:1.6; max-width:420px;
 }
 .video-body { font-size:16px; line-height:1.8; color:#cccce0; max-width:760px; }
 .video-lead {
@@ -457,7 +488,7 @@ img { display:block; }
 .trend-rail::-webkit-scrollbar-track { background:transparent; }
 .trend-rail::-webkit-scrollbar-thumb { background:var(--surface3); border-radius:4px; }
 .trend-card {
-    flex:0 0 200px; scroll-snap-align:start;
+    flex:0 0 228px; scroll-snap-align:start;
     background:var(--surface); border:1px solid var(--border);
     border-radius:12px; overflow:hidden;
     transition:transform 0.25s, border-color 0.25s, box-shadow 0.25s;
@@ -467,10 +498,26 @@ img { display:block; }
     box-shadow:0 12px 28px rgba(255,51,85,0.18);
 }
 .trend-thumb {
-    aspect-ratio:9/16; background:#000; position:relative;
+    aspect-ratio:9/16;
+    background:linear-gradient(160deg, #14141c 0%, #060608 55%, #0a0a0e 100%);
+    position:relative;
+    overflow:hidden;
 }
-.trend-thumb video {
+.trend-thumb .video-poster-img {
+    position:absolute; inset:0;
     width:100%; height:100%; object-fit:cover;
+    z-index:1;
+}
+.trend-thumb .video-hover-preview {
+    position:absolute; inset:0;
+    width:100%; height:100%; object-fit:cover;
+    z-index:2;
+    opacity:0;
+    transition:opacity 0.35s ease;
+}
+.trend-card:hover .trend-thumb .video-hover-preview,
+.trend-card:focus-within .trend-thumb .video-hover-preview {
+    opacity:1;
 }
 .trend-rank {
     position:absolute; top:8px; left:8px;
@@ -478,12 +525,28 @@ img { display:block; }
     padding:4px 10px; border-radius:14px;
     font-size:11px; font-weight:800;
     backdrop-filter:blur(6px);
+    z-index:5;
 }
-.trend-meta { padding:11px 13px 14px; }
+.trend-meta {
+    padding:16px 16px 18px;
+}
+.trend-meta .trend-eyebrow {
+    font-size:10px; font-weight:800;
+    letter-spacing:0.65px; text-transform:uppercase;
+    color:var(--text3); margin:0 0 7px 0;
+    display:block;
+}
 .trend-meta h3 {
-    font-size:13px; font-weight:700; line-height:1.35;
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    margin:0;
+    font-size:15px; font-weight:700; line-height:1.45;
+    letter-spacing:-0.15px;
+    color:var(--text);
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
     overflow:hidden;
+}
+.trend-meta .trend-sub {
+    display:block; margin-top:11px;
+    font-size:12px; color:var(--text2);
 }
 
 /* ── Trending Now sticky widget ── */
@@ -671,8 +734,7 @@ img { display:block; }
     .videos-hero-inner { padding:34px 20px; }
     .videos-hero h1 { font-size:32px; }
     .nav-item { padding:18px 11px; font-size:10.5px; }
-    .logo-text { font-size:14px; }
-    .logo-icon { height:36px; }
+    .logo-mark { height:36px; max-width:min(180px,50vw); }
 }
 
 </style>
@@ -680,9 +742,8 @@ img { display:block; }
 <body>
 <div class="header">
     <div class="header-inner">
-        <a href="/" class="logo">
-            <img src="/assets/logo.png" class="logo-icon" alt="MVN">
-            <div class="logo-text"><span>Malaysia</span> Viral News</div>
+        <a href="/" class="logo" aria-label="Malaysia Viral News">
+            <img src="/assets/logo.png" class="logo-mark" alt="Malaysia Viral News" width="180" height="42">
         </a>
         <nav class="nav"><a href="/" class="nav-item active">Utama</a><a href="/videos/" class="nav-item">Video</a><a href="/c/news/" class="nav-item">BERITA</a><a href="/c/hiburan/" class="nav-item">HIBURAN</a><a href="/c/lifestyle/" class="nav-item">LIFESTYLE</a><a href="/c/sukan/" class="nav-item">SUKAN</a><a href="/c/tech/" class="nav-item">TECH</a></nav>
     </div>
@@ -693,82 +754,108 @@ img { display:block; }
         <a href="/" class="back">← Kembali ke Utama</a>
         <div class="detail-head">
             <span class="badge" style="background:#d63031">TERKINI</span>
-            <h1>Pemotongan Gading Gajah Kelat di Jepun Berdasarkan Penilaian Klinikal</h1>
-            <p class="detail-sub">Jabatan Perlindungan Hidupan Liar dan Taman Negara memberi penjelasan terhadap tindakan rawatan</p>
+            <h1>Bagaimana Jika Gula-gula Sama Ketagihan Seperti Beberapa Dadah? Ujian Pecah Tanah Ini Menghidupkan Semula Perbahasan</h1>
+            
             <div class="detail-meta">
-                <span>2026-04-13 19:02:08</span>
+                <span>2026-04-24 12:51:24</span>
                 <span>·</span>
-                <span>9 hari lalu</span>
+                <span>26 minit lalu</span>
             </div>
         </div>
-        <div class="detail-hero" style="background-image:url('https://www.sinarharian.com.my/uploads/images/2026/04/13/3490449.webp')"></div>
-        <div class="detail-body"><p>Jabatan Perlindungan Hidupan Liar dan Taman Negara (Perhilitan) mengumumkan bahawa tindakan pemotongan gading terhadap Kelat merupakan sebahagian daripada prosedur pengurusan veterinar yang dirancang untuk memastikan kesejahteraan jangka panjang gajah itu. Penilaian klinikal menunjukkan bahawa kerosakan telah berlaku di sebelah kiri gading Kelat, manakala pemotongan pada sebelah kanan dilakukan untuk mengekalkan keseimbangan struktur. Tindakan ini bertujuan mengelakkan ketidakseimbangan yang boleh menyebabkan ketidakselesaan dan risiko kecederaan.</p><p>Pihak zoo memastikan langkah pengurusan tersebut tidak hanya berdasarkan keperluan rawatan, tetapi juga dalam konteks konservasi. Penyelidikan klinikal menunjukkan bahawa ketidakseimbangan gading boleh mempengaruhi tingkah laku semula jadi gajah seperti pergerakan, pemakanan, dan interaksi sosial. Oleh itu, tindakan ini dianggap sebagai langkah pencegahan dan penjagaan terhadap kesihatan fizikal dan mental haiwan tersebut.</p><p>Perhilitan turut memberi penjelasan bahawa tindakan itu tidak diambil secara sembarangan, tetapi berdasarkan nasihat pakar veterinar yang berpengalaman dalam pengurusan haiwan langka. Gajah Asia yang ditempatkan di Jepun termasuk Dara, Amoi, dan Kelat adalah sebahagian daripada program konservasi yang dilaksanakan secara berterusan untuk memastikan kelestarian spesies ini di luar habitat semulajadi. Isu ini telah menimbulkan kebimbangan ramai orang awam, namun pihak jabatan menekankan pentingnya pendekatan saintifik dalam pengurusan haiwan.</p><p>Kesan daripada tindakan itu adalah peningkatan kesedaran masyarakat tentang pentingnya rawatan veterinar berdasarkan kajian klinikal dan pengurusan yang beretika dalam institusi seperti zoo. Perhilitan menyatakan bahawa ia akan terus membuka diri untuk menerima pandangan masyarakat, tetapi tetap menekankan prinsip kebajikan haiwan sebagai asas utama dalam setiap keputusan yang diambil.</p></div>
+        <div class="detail-hero" style="background-image:url('https://rojakdaily.com/wp-content/uploads/2025/07/sweet20addiction-emotional20health-research20study.webp')"></div>
+        <div class="detail-body"><p>Kajian terbaru mendedahkan bahawa 62% orang berasa ketagih kepada gula-gula, sering melawan rasa bersalah dan mengidam.</p><p>Temui ikatan emosi dengan gula dan pelajari cara melepaskan diri daripada kitaran manis ini.</p><p>Jangan lepaskan cerapan yang boleh mengubah hubungan anda dengan makanan!</p></div>
     </article>
     
+    <aside class="aff-widget">
+      <h3>Produk Pilihan</h3>
+      
+        <a href="https://invol.co/aff_m?offer_id=1082029&aff_id=1082029&url=https://shopee.com.my/" target="_blank" rel="sponsored noopener"
+           class="aff-card" style="background:linear-gradient(135deg,#ee4d2d,#ff7337)">
+          <span class="aff-tag">SPONSORED</span>
+          <span class="aff-merchant">SHOPEE</span>
+          <span class="aff-label">Produk Viral Shopee</span>
+          <span class="aff-cta">Lihat Produk →</span>
+        </a>
+        <a href="https://invol.co/aff_m?offer_id=1082029&aff_id=1082029&url=https://www.lazada.com.my/" target="_blank" rel="sponsored noopener"
+           class="aff-card" style="background:linear-gradient(135deg,#0f136d,#1a56db)">
+          <span class="aff-tag">SPONSORED</span>
+          <span class="aff-merchant">LAZADA</span>
+          <span class="aff-label">Jualan Hebat Lazada</span>
+          <span class="aff-cta">Lihat Produk →</span>
+        </a>
+        <a href="https://invol.co/aff_m?offer_id=1082029&aff_id=1082029&url=https://www.zalora.com.my/" target="_blank" rel="sponsored noopener"
+           class="aff-card" style="background:linear-gradient(135deg,#000,#444)">
+          <span class="aff-tag">SPONSORED</span>
+          <span class="aff-merchant">ZALORA</span>
+          <span class="aff-label">Fesyen Zalora</span>
+          <span class="aff-cta">Lihat Produk →</span>
+        </a>
+      <p class="aff-disclaimer">Pautan afiliat — kami dapat komisen jika anda beli.</p>
+    </aside>
     
     <section class="related"><h2>Berita Berkaitan</h2><div class="related-grid">
-            <a href="/artikel/2/" class="related-card">
-                <div class="related-thumb" style="background-image:url('https://www.sinarharian.com.my/uploads/images/2026/04/11/3488010.webp')">
-                    <span class="badge" style="background:#d63031">TERKINI</span>
-                </div>
-                <h4>'Tempurung kepala pecah, pendarahan dalam otak'</h4>
-                <span class="meta">9 hari lalu</span>
-            </a>
-            <a href="/artikel/5/" class="related-card">
-                <div class="related-thumb" style="background-image:url('https://www.sinarharian.com.my/uploads/images/2026/04/13/3489434.webp')">
-                    <span class="badge" style="background:#d63031">TERKINI</span>
-                </div>
-                <h4>Perkahwinan Hanya Sehari, Suami Rupa-Rupa Wanita</h4>
-                <span class="meta">9 hari lalu</span>
-            </a>
-            <a href="/artikel/7/" class="related-card">
-                <div class="related-thumb" style="background-image:url('https://assets.bharian.com.my/images/articles/BH12HANYAN-O_BHfield_image_listing_featured_v2.var_1775971216.jpg')">
-                    <span class="badge" style="background:#d63031">TERKINI</span>
-                </div>
-                <h4>Tiga individu ditahan susulan serangan wanita semasa siaran langsung</h4>
-                <span class="meta">11 hari lalu</span>
-            </a>
             <a href="/artikel/0/" class="related-card">
-                <div class="related-thumb" style="background-image:url('https://ichef.bbci.co.uk/news/1024/branded_news/7a79/live/1fe25240-369c-11f1-a64d-95608276955d.jpg')">
-                    <span class="badge" style="background:#e67e22">DUNIA</span>
+                <div class="related-thumb" style="background-image:url('https://rojakdaily.com/wp-content/uploads/2025/07/fruit20trees-gardening20tips-pawpaw20tree.webp')">
+                    <span class="badge" style="background:#d63031">TERKINI</span>
                 </div>
-                <h4>Rundingan Perang Iran–AS Terhenti Selepas Gagal di Washington</h4>
-                <span class="meta">9 hari lalu</span>
+                <h4>Pokok Buah-buahan yang Tumbuh Di Mana-mana Tanpa Dusun</h4>
+                <span class="meta">18 minit lalu</span>
+            </a>
+            <a href="/artikel/1/" class="related-card">
+                <div class="related-thumb" style="background-image:url('https://www.freemalaysiatoday.com/cdn-cgi/image/quality=75,format=auto,fit=cover,dpr=1,width=1200,height=630,gravity=center/https://media.freemalaysiatoday.com/wp-content/uploads/2025/08/a10cc24b-deepseek-epa-110825.webp')">
+                    <span class="badge" style="background:#3498db">TEKNOLOGI</span>
+                </div>
+                <h4>DeepSeek China Keluarkan Model AI Baharu Dengan Capaian Konteks Panjang</h4>
+                <span class="meta">19 minit lalu</span>
+            </a>
+            <a href="/artikel/2/" class="related-card">
+                <div class="related-thumb" style="background-image:url('https://media.says.com/2026/04/CONTOH-71.png')">
+                    <span class="badge" style="background:#d63031">TERKINI</span>
+                </div>
+                <h4>Kecelakaan Helikopter Laut Malaysia Paling Maut Dalam Dua Tahun</h4>
+                <span class="meta">21 minit lalu</span>
+            </a>
+            <a href="/artikel/4/" class="related-card">
+                <div class="related-thumb" style="background-image:url('https://www.utusan.com.my/wp-content/uploads/2026/04/0a1bc5e5-3bb3-423f-b124-6d46fb7be378.jpeg')">
+                    <span class="badge" style="background:#a155c9">HIBURAN</span>
+                </div>
+                <h4>MADAM Luncurkan Album Sulung dengan Lagu Mona Lisa</h4>
+                <span class="meta">38 minit lalu</span>
             </a></div></section>
     <aside class="trending-widget"><h3>Trending Now</h3><ol>
-        <li><a href="/video/1/">
+        <li><a href="/video/3/">
           <span class="tw-num">01</span>
           <div>
-            <div class="tw-title">#fyp</div>
+            <div class="tw-title">Beginilah Kehidupan Baru Bermula Selepas Rosak Sepenuhnya</div>
             <span class="tw-cat">sosial</span>
           </div>
         </a></li>
-        <li><a href="/video/3/">
+        <li><a href="/video/4/">
           <span class="tw-num">02</span>
           <div>
-            <div class="tw-title">Kegembiraan Kecil, Kebahagiaan Besar</div>
-            <span class="tw-cat">sosial</span>
+            <div class="tw-title">Video Tular: Artis Muda Tampilkan Persembahan Menakjubkan di Panggung Kecil</div>
+            <span class="tw-cat">hiburan</span>
           </div>
         </a></li>
-        <li><a href="/video/18/">
+        <li><a href="/video/1/">
           <span class="tw-num">03</span>
           <div>
-            <div class="tw-title">Naik Pesawat, Dapat Tahu Masa Berlepas Artemis 2</div>
+            <div class="tw-title">Mengapa Saya Sering Berkomunikasi dalam Bahasa Inggeris Ketika Membincangkan Budaya Malaysia</div>
             <span class="tw-cat">sosial</span>
           </div>
         </a></li>
-        <li><a href="/video/22/">
+        <li><a href="/artikel/2/">
           <span class="tw-num">04</span>
           <div>
-            <div class="tw-title">Belaku di PPR Sri Malaysia, Tak Tahu Kena Kutip Ke Belum</div>
-            <span class="tw-cat">sosial</span>
+            <div class="tw-title">Kecelakaan Helikopter Laut Malaysia Paling Maut Dalam Dua Tahun</div>
+            <span class="tw-cat">berita</span>
           </div>
         </a></li>
-        <li><a href="/video/0/">
+        <li><a href="/video/2/">
           <span class="tw-num">05</span>
           <div>
-            <div class="tw-title">#fyp</div>
-            <span class="tw-cat">sosial</span>
+            <div class="tw-title">Selepas Siti Nurhaliza, Siapa Penyanyi No.1 Malaysia?</div>
+            <span class="tw-cat">hiburan</span>
           </div>
         </a></li></ol></aside>
     <script>
